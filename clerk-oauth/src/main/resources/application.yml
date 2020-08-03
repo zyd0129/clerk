@@ -3,7 +3,7 @@ logging:
     root:
       info
 mybatis:
-  type-aliases-package: com.ps.judge.dao.entity
+  type-aliases-package: com.wind.clerk.oauth.dao.entity
   configuration:
     map-underscore-to-camel-case: true
 server:
@@ -11,7 +11,12 @@ server:
 
 spring:
   application:
-    name: clerk-web
+    name: clerk-oauth
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: Dev@123456
+    username: dev
+    url: jdbc:mysql://192.168.40.147:3306/clerk-oauth?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
   cloud:
     nacos:
       discovery:
