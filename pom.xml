@@ -17,6 +17,10 @@
         <module>clerk-web</module>
         <module>clerk-oauth</module>
         <module>clerk-common</module>
+        <module>clerk-flowable</module>
+        <module>clerk-judge</module>
+        <module>clerk-jury</module>
+        <module>clerk-gateway</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
