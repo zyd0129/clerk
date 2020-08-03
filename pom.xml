@@ -14,8 +14,9 @@
     <artifactId>clerk</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>core</module>
-        <module>client</module>
+        <module>clerk-web</module>
+        <module>clerk-oauth</module>
+        <module>clerk-common</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

@@ -1,0 +1,22 @@
+logging:
+  level:
+    root:
+      info
+mybatis:
+  type-aliases-package: com.ps.judge.dao.entity
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  port: 8080
+
+spring:
+  application:
+    name: clerk
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        cluster-name: "FS"
+        metadata:
+          version: "v1"
+        namespace: f6847707-2444-4ba2-8151-0a8bc7d5648a
