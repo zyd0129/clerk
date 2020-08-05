@@ -6,6 +6,7 @@ mybatis:
   type-aliases-package: com.wind.clerk.oauth.dao.entity
   configuration:
     map-underscore-to-camel-case: true
+  mapper-locations: mapper/**/*.xml
 server:
   port: 8080
 
