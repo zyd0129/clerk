@@ -35,7 +35,7 @@ public class AuthorityController {
     }
 
     @PostMapping("delete")
-    public Boolean deleteAuthority(@RequestBody AuthorityDO authorityDO) {
+    public Boolean deleteAuthority(@RequestBody AuthorityDO authorityDO) throws Exception {
         return authorityService.delete(authorityDO.getId());
     }
 }

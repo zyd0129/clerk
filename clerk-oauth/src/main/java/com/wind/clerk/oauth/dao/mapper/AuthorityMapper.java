@@ -11,4 +11,5 @@ public interface AuthorityMapper {
     Boolean insert(AuthorityDO authority);
     List<AuthorityDO> query();
     Boolean delete(@Param("id") Integer id);
+    Integer countOfRelatedRoles(@Param("authorityId") Integer authorityId);
 }

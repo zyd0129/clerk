@@ -11,5 +11,5 @@ public interface AuthorityService {
     Boolean insert(AuthorityDO authorityDO);
     List<AuthorityDO> query();
     AuthorityDO tree();
-    Boolean delete(Integer id);
+    Boolean delete(Integer id) throws Exception;
 }

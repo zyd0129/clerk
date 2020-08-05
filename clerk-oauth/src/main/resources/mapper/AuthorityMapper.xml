@@ -44,6 +44,9 @@
         </set>
         where id=#{id}
     </update>
+    <select id="countOfRelatedRoles" resultType="int">
+        select count(*) from `clerk-oauth`.role_authority where authority_id=#{authorityId}
+    </select>
     <delete id="delete">
         delete from `clerk-oauth`.authority where id=#{id}
     </delete>
