@@ -1,29 +1,44 @@
 package com.wind.clerk.oauth.service.impl;
 
-import com.wind.clerk.oauth.dao.AuthorityMapper;
+import com.wind.clerk.oauth.dao.mapper.AuthorityMapper;
+import com.wind.clerk.oauth.dao.entity.AuthorityDO;
+import com.wind.clerk.oauth.model.AuthorityTree;
 import com.wind.clerk.oauth.service.AuthorityService;
-import com.wind.clerk.oauth.service.bo.AuthorityBO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Service
 public class AuthorityServiceImpl implements AuthorityService {
     @Autowired
     AuthorityMapper authorityMapper;
+
     @Override
-    public Boolean update(AuthorityBO authorityBO) {
-        return authorityMapper.update(authorityBO.convertToDO());
+    public Boolean update(AuthorityDO authorityDO) {
+        LocalDateTime now = LocalDateTime.now();
+        authorityDO.setGmtModified(now);
+        return authorityMapper.update(authorityDO);
     }
 
     @Override
-    public Boolean insert(AuthorityBO authorityBO) {
-        return authorityMapper.insert(authorityBO.convertToDO());
+    public Boolean insert(AuthorityDO authorityDO) {
+        LocalDateTime now = LocalDateTime.now();
+        authorityDO.setGmtCreated(now);
+        authorityDO.setGmtModified(now);
+        return authorityMapper.insert(authorityDO);
     }
 
     @Override
-    public List<AuthorityBO> query() {
-        return authorityMapper.query().stream().map(AuthorityBO::convertFromDo).collect(Collectors.toList());
+    public List<AuthorityDO> query() {
+        return authorityMapper.query();
+    }
+
+    @Override
+    public AuthorityDO tree() {
+        AuthorityTree authorityTree = new AuthorityTree(authorityMapper.query());
+        return authorityTree.build();
     }
 
     @Override

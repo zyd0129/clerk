@@ -1,7 +1,7 @@
 package com.wind.clerk.oauth.controller;
 
+import com.wind.clerk.oauth.dao.entity.UserDO;
 import com.wind.clerk.oauth.service.UserService;
-import com.wind.clerk.oauth.service.bo.UserBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ public class TestControl {
     }
 
     @GetMapping("users")
-    public List<UserBO> userBOList() {
+    public List<UserDO> userBOList() {
         return userService.query();
     }
 }

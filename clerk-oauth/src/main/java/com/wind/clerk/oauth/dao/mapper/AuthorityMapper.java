@@ -1,4 +1,4 @@
-package com.wind.clerk.oauth.dao;
+package com.wind.clerk.oauth.dao.mapper;
 
 
 import com.wind.clerk.oauth.dao.entity.AuthorityDO;
