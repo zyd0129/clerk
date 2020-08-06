@@ -1,7 +1,7 @@
 logging:
   level:
-    root:
-      info
+    root: info
+    com.wind.clerk.oauth.dao.mapper: debug
 mybatis:
   type-aliases-package: com.wind.clerk.oauth.dao.entity
   configuration:
@@ -13,6 +13,8 @@ server:
 spring:
   application:
     name: clerk-oauth
+  jackson:
+    default-property-inclusion: non_empty
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: Dev@123456

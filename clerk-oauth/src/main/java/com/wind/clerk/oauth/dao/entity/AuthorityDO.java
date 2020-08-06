@@ -3,12 +3,13 @@ package com.wind.clerk.oauth.dao.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class AuthorityDO {
+public class AuthorityDO implements Serializable {
     private Integer id;
     private String name;
     private String displayName;

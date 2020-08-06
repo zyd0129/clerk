@@ -11,15 +11,153 @@
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="expired" property="expired" jdbcType="TINYINT"/>
         <result column="locked" property="locked" jdbcType="TINYINT"/>
-        <result column="credentialsExpired" property="credentialsExpired" jdbcType="TINYINT"/>
+        <result column="credentials_expired" property="credentialsExpired" jdbcType="TINYINT"/>
         <result column="enabled" property="enabled" jdbcType="TINYINT"/>
         <result column="user_type" property="userType" jdbcType="INTEGER"/>
         <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
         <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <collection property="roles" ofType="RoleDO">
+            <id property="id" column="r_id"/>
+            <result property="name" column="r_name"/>
+            <result property="displayName" column="r_display_name"/>
+        </collection>
+        <collection property="permissions" ofType="AuthorityDO">
+            <id property="id" column="a_id"/>
+            <result property="name" column="a_name"/>
+            <result property="displayName" column="a_display_name"/>
+            <result property="parent" column="parent"/>
+            <result property="resourceUrl" column="resource_url"/>
+        </collection>
     </resultMap>
 
-    <select id="query" resultMap="resultMap">
-        select * from `clerk-oauth`.user
+    <resultMap id="queryMap" type="UserDO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="expired" property="expired" jdbcType="TINYINT"/>
+        <result column="locked" property="locked" jdbcType="TINYINT"/>
+        <result column="credentials_expired" property="credentialsExpired" jdbcType="TINYINT"/>
+        <result column="enabled" property="enabled" jdbcType="TINYINT"/>
+        <result column="user_type" property="userType" jdbcType="INTEGER"/>
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+<!--        这里是解决通过roleId查询用户且分页功能-->
+        <collection property="roles" javaType="ArrayList" ofType="RoleDO"  column="id" select="com.wind.clerk.oauth.dao.mapper.RoleMapper.queryByUserId"/>
+    </resultMap>
+
+    <select id="query" parameterType="com.wind.clerk.oauth.pojo.query.UserQuery" resultMap="queryMap">
+        select distinct u.*
+        from `clerk-oauth`.user u
+        left join `clerk-oauth`.user_role ur on u.id = ur.user_id
+        <where>
+            <if test="username!=null">
+                and u.username=#{username}
+            </if>
+            <if test="name!=null">
+                and u.name=#{name}
+            </if>
+            <if test="mobile!=null">
+                and u.mobile=#{mobile}
+            </if>
+            <if test="roleId!=null">
+                and ur.role_id=#{roleId}
+            </if>
+        </where>
     </select>
+    <select id="getByIdWithRoles" resultMap="resultMap">
+        select u.*, r.id r_id, r.name r_name, r.display_name r_display_name
+        from `clerk-oauth`.user u
+                 left join `clerk-oauth`.user_role ur on u.id = ur.user_id
+                 left join `clerk-oauth`.role r on ur.role_id = r.id
+        where u.id = #{id}
+    </select>
+    <select id="getById" resultMap="resultMap">
+        select *
+        from `clerk-oauth`.user
+        where id = #{id}
+    </select>
+
+    <select id="getByIdWithRolesAndAuthorities" resultMap="resultMap">
+        select distinct u.*,
+                        r.id           r_id,
+                        r.name         r_name,
+                        r.display_name r_display_name,
+                        a.id           a_id,
+                        a.name         a_name,
+                        a.display_name a_display_name,
+                        a.parent,
+                        a.resource_url
+        from `clerk-oauth`.user u
+                 left join `clerk-oauth`.user_role ur on u.id = ur.user_id
+                 left join `clerk-oauth`.role r on ur.role_id = r.id
+                 left join `clerk-oauth`.role_authority ra on r.id = ra.role_id
+                 left join `clerk-oauth`.authority a on ra.authority_id = a.id
+        where u.id = #{id}
+    </select>
+    <select id="getByUsernameWithRolesAndAuthorities" resultMap="resultMap">
+        select distinct u.*,
+                        r.id           r_id,
+                        r.name         r_name,
+                        r.display_name r_display_name,
+                        a.id           a_id,
+                        a.name         a_name,
+                        a.display_name a_display_name,
+                        a.parent,
+                        a.resource_url
+        from `clerk-oauth`.user u
+                 left join `clerk-oauth`.user_role ur on u.id = ur.user_id
+                 left join `clerk-oauth`.role r on ur.role_id = r.id
+                 left join `clerk-oauth`.role_authority ra on r.id = ra.role_id
+                 left join `clerk-oauth`.authority a on ra.authority_id = a.id
+        where u.username = #{username}
+    </select>
+
+    <insert id="insert" parameterType="UserDO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into `clerk-oauth`.user (username, name, mobile, password, user_type, gmt_created, gmt_modified)
+        values (#{username}, #{name}, #{mobile}, #{password}, #{userType}, #{gmtCreated}, #{gmtModified})
+    </insert>
+
+    <update id="update" parameterType="UserDO">
+        update `clerk-oauth`.user
+        <set>
+            <if test="username!=null">
+                username=#{username},
+            </if>
+            <if test="name!=null">
+                name=#{name},
+            </if>
+            <if test="mobile!=null">
+                mobile=#{mobile},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="gmtModified!=null">
+                gmt_modified=#{gmtModified},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from `clerk-oauth`.user
+        where id = #{id}
+    </delete>
+
+    <insert id="batchInsertUserRole" parameterType="RoleAuthorityDO">
+        insert into `clerk-oauth`.user_role (user_id,role_id, gmt_created, gmt_modified)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId}, #{item.roleId}, #{item.gmtCreated}, #{item.gmtModified})
+        </foreach>
+    </insert>
+    <delete id="deleteUserRoleByUserId">
+        delete
+        from `clerk-oauth`.user_role
+        where user_id = #{userId}
+    </delete>
 
 </mapper>

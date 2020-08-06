@@ -43,6 +43,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public Boolean delete(Integer id) throws Exception {
+        //todo
         if (authorityMapper.countOfRelatedRoles(id) > 0) {
             throw new Exception("无法删除,尚有关联角色");
         }
