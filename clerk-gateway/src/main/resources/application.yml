@@ -11,7 +11,7 @@ server:
 
 spring:
   application:
-    name: clerk-web
+    name: clerk-gateway
   cloud:
     nacos:
       discovery:
@@ -20,3 +20,8 @@ spring:
         metadata:
           version: "v1"
         namespace: "ecfb127e-7595-4da6-ae6b-d7f1abf4d6e8"
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      token-info-uri: http://localhost:8081/oauth/check_token

@@ -1,6 +1,7 @@
 package com.wind.clerk.oauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.bootstrap.encrypt.KeyProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,16 +16,29 @@ import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.security.KeyPair;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+    @Resource(name = "keyProp")
+    private KeyProperties keyProperties;
+
+    @Bean("keyProp")
+    public KeyProperties keyProperties() {
+        return new KeyProperties();
+    }
+
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -47,17 +61,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(jdbcClientDetailsService());
-
-//        clients.inMemory().withClient("c1")
-//                .secret(passwordEncoder.encode("secret"))
-//                .resourceIds("res1") //资源
-//                .authorizedGrantTypes("authorization_code", "password", "client_credentials","implicit","refresh_token")
-//                //这里没有常量，是因为这个是要读库的
-//                .scopes("all")//允许的授权范围
-//                .autoApprove(false)
-////                .authorities()  //用来配合scope,如果scope不够用的话
-//                .redirectUris("http://www.baidu.com");
-
     }
 
     /**
@@ -82,8 +85,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     // token存储策略
     @Bean
     public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource);
-//        return new JwtTokenStore(jwtAccessTokenConverter());
+//        return new JdbcTokenStore(dataSource);
+        return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
     @Bean
@@ -92,31 +95,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         converter.setSigningKey("secret");
 
 //        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-//        KeyPair keyPair = new KeyStoreKeyFactory
-//                (keyProperties.getKeyStore().getLocation(), keyProperties.getKeyStore().getSecret().toCharArray())
-//                .getKeyPair(keyProperties.getKeyStore().getAlias(),keyProperties.getKeyStore().getPassword().toCharArray());
+        KeyPair keyPair = new KeyStoreKeyFactory
+                (keyProperties.getKeyStore().getLocation(), keyProperties.getKeyStore().getSecret().toCharArray())
+                .getKeyPair(keyProperties.getKeyStore().getAlias(),keyProperties.getKeyStore().getPassword().toCharArray());
 //        converter.setKeyPair(keyPair);
-//        //配置自定义的CustomUserAuthenticationConverter
-//        DefaultAccessTokenConverter accessTokenConverter = (DefaultAccessTokenConverter) converter.getAccessTokenConverter();
+        //配置自定义的CustomUserAuthenticationConverter
+        DefaultAccessTokenConverter accessTokenConverter = (DefaultAccessTokenConverter) converter.getAccessTokenConverter();
 //        accessTokenConverter.setUserTokenConverter(customUserAuthenticationConverter);
         return converter;
     }
 
-    //授权模式，用户授权客户端记录
-    @Bean
-    public ApprovalStore approvalStore() {
-        return new JdbcApprovalStore(dataSource);
-    }
-
-    /**
-     * 授权模式，code被使用之后，被从数据库删除
-     *
-     * @return
-     */
-    @Bean
-    public AuthorizationCodeServices authorizationCodeServices() {
-        return new JdbcAuthorizationCodeServices(dataSource);
-    }
 ////    @Bean
 ////    public AuthorizationServerTokenServices tokenServices() throws Exception {
 ////        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
@@ -141,9 +129,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //                .tokenServices() //令牌服务
                 .tokenStore(tokenStore())
                 // 配置JwtAccessToken转换器
-//                .tokenEnhancer(jwtAccessTokenConverter())
-                .approvalStore(approvalStore())
-                .authorizationCodeServices(authorizationCodeServices())//授权码模式需要
+                .tokenEnhancer(jwtAccessTokenConverter())
         ;
 
     }

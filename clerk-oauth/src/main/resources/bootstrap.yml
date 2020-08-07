@@ -1,9 +1,11 @@
 spring:
+  profiles:
+    active: ${profiles.active}
   application:
     name: "clerk-oauth"
   cloud:
     nacos:
       config:
-        server-addr: "192.168.40.150:8848"
-        namespace: "ecfb127e-7595-4da6-ae6b-d7f1abf4d6e8"
+        server-addr: ${nacos.server-addr}
+        namespace: ${nacos.namespace}
         file-extension: "yml"

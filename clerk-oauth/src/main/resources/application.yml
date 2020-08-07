@@ -8,7 +8,7 @@ mybatis:
     map-underscore-to-camel-case: true
   mapper-locations: mapper/**/*.xml
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -23,8 +23,15 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: "192.168.40.150:8848"
+        server-addr: ${nacos.server-addr}
         cluster-name: "FS"
         metadata:
           version: "v1"
-        namespace: "ecfb127e-7595-4da6-ae6b-d7f1abf4d6e8"
+        namespace: ${nacos.namespace}
+encrypt:
+  key-store:
+    alias: ps
+    secret: admin123
+    password: admin123
+    type: jks
+    location: classpath:xc.keystore
