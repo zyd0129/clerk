@@ -17,21 +17,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsService userDetailsService;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // DelegatingPasswordEncoder 委托模式，+策略模式，可以动态决定 passwordEncode
+        return new BCryptPasswordEncoder();
+    }
 
-    /**
-     * 这里发生了循环依赖，userDetailsService依赖passwordEncoder，但是config类中必须先注入依赖之后，才生成内部定义的bean,这是为了防止空指针异常
-     * @return
-     */
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        // DelegatingPasswordEncoder 委托模式，+策略模式，可以动态决定 passwordEncode
-//        return new BCryptPasswordEncoder();
-//    }
-
-//    实测 这里不能用authenticationManager否则 栈溢出
+    //    实测 这里不能用authenticationManager否则 栈溢出
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
@@ -39,7 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder.encode("123456")).roles("ADMIN");
         auth.userDetailsService(userDetailsService);
     }
 

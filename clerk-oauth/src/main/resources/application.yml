@@ -28,6 +28,7 @@ spring:
         metadata:
           version: "v1"
         namespace: ${nacos.namespace}
+
 encrypt:
   key-store:
     alias: ps
@@ -35,3 +36,4 @@ encrypt:
     password: admin123
     type: jks
     location: classpath:xc.keystore
+  key: 123456

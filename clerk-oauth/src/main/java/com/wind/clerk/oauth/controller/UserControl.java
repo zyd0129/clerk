@@ -32,11 +32,6 @@ public class UserControl {
         return userService.update(userDO);
     }
 
-    @PostMapping("changePassword")
-    public boolean changePassword(@RequestBody ChangePasswordForm changePasswordForm) throws Exception {
-        return userService.changePassword(changePasswordForm);
-    }
-
     @PostMapping("resetPassword")
     public boolean resetPassword(@RequestBody UserDO userDO) throws Exception {
         return userService.update(userDO);

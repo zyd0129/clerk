@@ -41,7 +41,8 @@ public class UserDO implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return permissions.stream().map(s -> new SimpleGrantedAuthority(s.getName())).collect(Collectors.toList());
+        //权限和资源路径一一对应，这里返还url,简化网关鉴权
+        return permissions.stream().map(s -> new SimpleGrantedAuthority(s.getResourceUrl())).collect(Collectors.toList());
     }
 
     @JsonIgnore
