@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("test/currentUser")
+@RequestMapping("api/currentUser")
 @RestController
 @AllArgsConstructor
 public class CurrentUserControl {
@@ -19,6 +19,9 @@ public class CurrentUserControl {
 
     @GetMapping("info")
     public UserDO getUser(Integer id) {
+        //todo
+        //获取当前用户id
+        //查询数据库
         return userService.getByIdWithRolesAndAuthorities(id);
     }
 

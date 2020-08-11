@@ -1,6 +1,8 @@
 package com.wind.clerk.oauth.service.impl;
 
 import org.junit.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +13,9 @@ public class RoleServiceImplTest {
 
     @Test
     public void test() {
-        Set<String> stringSet = new HashSet<>(null);
+//        Set<String> stringSet = new HashSet<>(null);
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        System.out.println(encoder.encode("abc123456"));
     }
 
 }
