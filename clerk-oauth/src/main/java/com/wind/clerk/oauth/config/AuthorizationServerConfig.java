@@ -32,6 +32,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private KeyProperties keyProperties;
 
     @Bean
+    public KeyPair keyPair() {
+        return new KeyStoreKeyFactory
+                (keyProperties.getKeyStore().getLocation(), keyProperties.getKeyStore().getSecret().toCharArray())
+                .getKeyPair(keyProperties.getKeyStore().getAlias(), keyProperties.getKeyStore().getPassword().toCharArray());
+    }
+
+    @Bean
     public JdbcClientDetailsService jdbcClientDetailsService() {
         return new JdbcClientDetailsService(dataSource);
     }
@@ -44,10 +51,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        KeyPair keyPair = new KeyStoreKeyFactory
-                (keyProperties.getKeyStore().getLocation(), keyProperties.getKeyStore().getSecret().toCharArray())
-                .getKeyPair(keyProperties.getKeyStore().getAlias(), keyProperties.getKeyStore().getPassword().toCharArray());
-        converter.setKeyPair(keyPair);
+        converter.setKeyPair(keyPair());
         //配置自定义的userTokenConverter
         DefaultAccessTokenConverter accessTokenConverter = (DefaultAccessTokenConverter) converter.getAccessTokenConverter();
         accessTokenConverter.setUserTokenConverter(useTokenConverter);
@@ -62,6 +66,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.tokenKeyAccess("permitAll()");//公有密钥jwt访问端点
         security.allowFormAuthenticationForClients(); //容许表单提交，默认是basic
     }
 

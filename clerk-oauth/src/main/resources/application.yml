@@ -8,7 +8,7 @@ mybatis:
     map-underscore-to-camel-case: true
   mapper-locations: mapper/**/*.xml
 server:
-  port: 8081
+  port: 8082
 
 spring:
   application:

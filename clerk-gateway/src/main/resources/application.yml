@@ -9,10 +9,14 @@ mybatis:
     map-underscore-to-camel-case: true
 server:
   port: 8080
-
 spring:
   application:
     name: clerk-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: 'http://localhost:8082/api/rsa/publicKey'
   cloud:
     nacos:
       discovery:
@@ -33,8 +37,25 @@ spring:
             - Path=/clerk-oauth/**
           filters:
             - StripPrefix=1
-#security:
-#  oauth2:
-#    resource:
-#      id: ${spring.application.name}
-#      token-info-uri: http://localhost:8081/oauth/check_token
+        - id: judge
+          uri: lb://judge
+          predicates:
+            - Path=/judge/**
+          filters:
+            - StripPrefix=1
+        - id: jury
+          uri: lb:/jury
+          predicates:
+            - Path=/jury/**
+          filters:
+            - StripPrefix=1
+        - id: witness
+          uri: lb://witness
+          predicates:
+            - Path=/witness/**
+          filters:
+            - StripPrefix=1
+clerk:
+  security:
+    notRequireAuthentication: /clerk-auth/oauth/**
+    notRequireAuthorization: /clerk-auth/current/**
