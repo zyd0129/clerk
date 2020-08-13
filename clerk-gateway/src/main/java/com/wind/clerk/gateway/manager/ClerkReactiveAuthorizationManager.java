@@ -1,4 +1,4 @@
-package com.wind.clerk.gateway.config;
+package com.wind.clerk.gateway.manager;
 
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * 权限即资源路径
+ * accessManger权限即资源路径
  */
 @Component
 public class ClerkReactiveAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
