@@ -24,11 +24,7 @@ spring:
     nacos:
       discovery:
         server-addr: ${nacos.server-addr}
-        cluster-name: "FS"
-        metadata:
-          version: "v1"
         namespace: ${nacos.namespace}
-
 encrypt:
   key-store:
     alias: ps
@@ -36,4 +32,3 @@ encrypt:
     password: admin123
     type: jks
     location: classpath:xc.keystore
-  key: 123456

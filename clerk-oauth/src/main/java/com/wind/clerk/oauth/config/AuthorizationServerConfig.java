@@ -79,10 +79,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         tokenServices.setAuthenticationManager(new ProviderManager(Arrays.<AuthenticationProvider>asList(provider)));
         tokenServices.setTokenStore(tokenStore());
         tokenServices.setSupportRefreshToken(true);
-        // token有效期自定义设置，90天
+        // token有效期自定义设置，10min,也可以数据库设置
         tokenServices.setAccessTokenValiditySeconds(60 * 10);
-        // refresh_token 90天
-        tokenServices.setRefreshTokenValiditySeconds(60 * 60);
+        // refresh_token 12h
+        tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 12);
         tokenServices.setTokenEnhancer(jwtAccessTokenConverter());
         tokenServices.setClientDetailsService(jdbcClientDetailsService());
         return tokenServices;
@@ -96,7 +96,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.tokenKeyAccess("permitAll()");//公有密钥jwt访问端点
         security.allowFormAuthenticationForClients(); //容许表单提交，默认是basic
     }
 

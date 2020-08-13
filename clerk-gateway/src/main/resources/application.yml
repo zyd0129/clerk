@@ -19,9 +19,6 @@ spring:
     nacos:
       discovery:
         server-addr:  ${nacos.server-addr}
-        cluster-name: "FS"
-        metadata:
-          version: "v1"
         namespace: ${nacos.namespace}
     gateway:
       discovery:
