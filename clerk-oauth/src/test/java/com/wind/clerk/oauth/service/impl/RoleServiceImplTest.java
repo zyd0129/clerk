@@ -15,7 +15,8 @@ public class RoleServiceImplTest {
     public void test() {
 //        Set<String> stringSet = new HashSet<>(null);
         PasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.println(encoder.encode("abc123456"));
+        String admin = encoder.encode("admin");
+        System.out.println(encoder.matches("admin",admin));
     }
 
 }

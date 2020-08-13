@@ -1,15 +1,15 @@
 package com.wind.clerk.oauth.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.wind.clerk.common.response.ApiResponse;
 import com.wind.clerk.oauth.dao.entity.UserDO;
-import com.wind.clerk.oauth.pojo.form.ChangePasswordForm;
 import com.wind.clerk.oauth.pojo.query.PageQuery;
 import com.wind.clerk.oauth.pojo.query.UserQuery;
 import com.wind.clerk.oauth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("test/users")
+@RequestMapping("users")
 @RestController
 public class UserControl {
 
@@ -33,8 +33,9 @@ public class UserControl {
     }
 
     @PostMapping("resetPassword")
-    public boolean resetPassword(@RequestBody UserDO userDO) throws Exception {
-        return userService.update(userDO);
+    public ApiResponse resetPassword(@RequestBody UserDO userDO) throws Exception {
+         userService.update(userDO);
+         return ApiResponse.success();
     }
 
     @PostMapping("add")

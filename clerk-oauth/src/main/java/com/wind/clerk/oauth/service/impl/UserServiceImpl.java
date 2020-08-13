@@ -2,6 +2,7 @@ package com.wind.clerk.oauth.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.wind.clerk.common.context.UserContextHolder;
 import com.wind.clerk.oauth.dao.entity.RoleDO;
 import com.wind.clerk.oauth.dao.entity.UserRoleDO;
 import com.wind.clerk.oauth.dao.mapper.UserMapper;
@@ -99,18 +100,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean changePassword(ChangePasswordForm changePasswordForm) throws Exception {
-        changePasswordForm.setOldPassword(passwordEncoder.encode(changePasswordForm.getOldPassword()));
-        changePasswordForm.setNewPassword(passwordEncoder.encode(changePasswordForm.getNewPassword()));
-        UserDO userDO = userMapper.getById(changePasswordForm.getId());
+        Integer userId = UserContextHolder.getCurrentUser().getUserId();
+        UserDO userDO = userMapper.getById(userId);
         if (userDO == null) {
             throw new Exception("user not found");
         }
-        if (!userDO.getPassword().equals(changePasswordForm.getOldPassword())) {
+        if (!passwordEncoder.matches(changePasswordForm.getOldPassword(),userDO.getPassword())) {
             throw new Exception("password not exact");
         }
         UserDO newPasswordUserDO = new UserDO();
-        BeanUtils.copyProperties(changePasswordForm, newPasswordUserDO);
-
+        newPasswordUserDO.setId(userId);
+        newPasswordUserDO.setPassword(changePasswordForm.getNewPassword());
         return update(newPasswordUserDO);
     }
 

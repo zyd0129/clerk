@@ -14,7 +14,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api")
 public class PublicKeyController {
     @Autowired
     KeyPair keyPair;
