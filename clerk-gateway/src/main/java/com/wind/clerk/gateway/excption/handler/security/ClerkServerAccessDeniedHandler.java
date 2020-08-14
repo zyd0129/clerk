@@ -1,4 +1,4 @@
-package com.wind.clerk.gateway.handler;
+package com.wind.clerk.gateway.excption.handler.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

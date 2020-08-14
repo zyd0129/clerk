@@ -1,8 +1,8 @@
 package com.wind.clerk.gateway.config;
 
 import com.wind.clerk.gateway.filter.CorsFilter;
-import com.wind.clerk.gateway.handler.ClerkServerAccessDeniedHandler;
-import com.wind.clerk.gateway.handler.ClerkServerAuthenticationEntryPoint;
+import com.wind.clerk.gateway.excption.handler.security.ClerkServerAccessDeniedHandler;
+import com.wind.clerk.gateway.excption.handler.security.ClerkServerAuthenticationEntryPoint;
 import com.wind.clerk.gateway.manager.ClerkReactiveAuthorizationManager;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
