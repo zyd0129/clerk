@@ -3,13 +3,14 @@ package com.wind.clerk.oauth.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 
-@ConfigurationProperties("encrypt")
-public class KeyProperties {
+@ConfigurationProperties("clerk.security")
+public class SecurityProperties {
 
     /**
      * A symmetric key. As a stronger alternative, consider using a keystore.
      */
-    private String key;
+    private Integer accessTokenValiditySeconds = 60 * 10;
+    private Integer refreshTokenValiditySeconds = 60 * 10 * 12;
 
     /**
      * A salt for the symmetric key, in the form of a hex-encoded byte array. As a
@@ -37,12 +38,20 @@ public class KeyProperties {
         this.failOnError = failOnError;
     }
 
-    public String getKey() {
-        return this.key;
+    public Integer getAccessTokenValiditySeconds() {
+        return accessTokenValiditySeconds;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setAccessTokenValiditySeconds(Integer accessTokenValiditySeconds) {
+        this.accessTokenValiditySeconds = accessTokenValiditySeconds;
+    }
+
+    public Integer getRefreshTokenValiditySeconds() {
+        return refreshTokenValiditySeconds;
+    }
+
+    public void setRefreshTokenValiditySeconds(Integer refreshTokenValiditySeconds) {
+        this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
     }
 
     public String getSalt() {

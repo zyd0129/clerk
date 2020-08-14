@@ -24,13 +24,17 @@ spring:
       discovery:
         server-addr: ${nacos.server-addr}
         namespace: ${nacos.namespace}
-encrypt:
-  key-store:
-    alias: ps
-    secret: admin123
-    password: admin123
-    type: jks
-    location: classpath:xc.keystore
+clerk:
+  security:
+    accessTokenValiditySeconds: 60
+    refreshTokenValiditySeconds: 60
+    key-store:
+      alias: ps
+      secret: admin123
+      password: admin123
+      type: jks
+      location: classpath:xc.keystore
+
 
 clerk-common:
   enabled: true

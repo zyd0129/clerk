@@ -42,12 +42,13 @@ public class SecurityConfig {
                 .pathMatchers(securityProperties.getNotRequireAuthentication()).permitAll()
                 .pathMatchers(securityProperties.getNotRequireAuthorization()).authenticated()
                 .anyExchange().access(clerkReactiveAuthorizationManager)
-                .and().exceptionHandling().accessDeniedHandler(clerkServerAccessDeniedHandler).authenticationEntryPoint(clerkServerAuthenticationEntryPoint)
+                .and().exceptionHandling().accessDeniedHandler(clerkServerAccessDeniedHandler).authenticationEntryPoint(clerkServerAuthenticationEntryPoint) //授权异常
         ;
 
 
         //这里提供一个JwtAuthenticationConverter扩展点，这里是默认实现
         ReactiveJwtAuthenticationConverterAdapter reactiveJwtAuthenticationConverterAdapter = new ReactiveJwtAuthenticationConverterAdapter(new JwtAuthenticationConverter());
+        //认证异常
         http.oauth2ResourceServer()
                 .authenticationEntryPoint(clerkServerAuthenticationEntryPoint)
                 .accessDeniedHandler(clerkServerAccessDeniedHandler)

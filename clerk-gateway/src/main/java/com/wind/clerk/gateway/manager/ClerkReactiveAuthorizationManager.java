@@ -25,7 +25,7 @@ public class ClerkReactiveAuthorizationManager implements ReactiveAuthorizationM
                 .filter(a -> a.isAuthenticated())
                 .flatMapIterable(a -> {
                     Jwt jwt = (Jwt) a.getPrincipal();
-                    return (List<String>)jwt.getClaims().get("authorities");
+                    return (List<String>) jwt.getClaims().get("authorities");
                 })
                 .any(u -> matcher.match(u, url))
                 .map(hasAuthority -> new AuthorizationDecision(hasAuthority))

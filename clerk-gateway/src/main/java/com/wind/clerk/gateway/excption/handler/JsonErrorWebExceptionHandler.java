@@ -31,11 +31,11 @@ public class JsonErrorWebExceptionHandler extends DefaultErrorWebExceptionHandle
         customError.put("code", getHttpStatus(error));
         customError.put("message", error.get("message"));
         customError.put("success", false);
-        if(errorAttributeOptions.isIncluded(ErrorAttributeOptions.Include.EXCEPTION)){
-            customError.put("exception", customError.getOrDefault("exception",""));
+        if (errorAttributeOptions.isIncluded(ErrorAttributeOptions.Include.EXCEPTION)) {
+            customError.put("exception", customError.getOrDefault("exception", ""));
         }
-        if(errorAttributeOptions.isIncluded(ErrorAttributeOptions.Include.STACK_TRACE)){
-            customError.put("trace", customError.getOrDefault("trace",""));
+        if (errorAttributeOptions.isIncluded(ErrorAttributeOptions.Include.STACK_TRACE)) {
+            customError.put("trace", customError.getOrDefault("trace", ""));
         }
 
         return ServerResponse.status(getHttpStatus(error)).contentType(MediaType.APPLICATION_JSON)

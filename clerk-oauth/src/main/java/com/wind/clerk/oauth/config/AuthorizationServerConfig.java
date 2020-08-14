@@ -28,7 +28,7 @@ import java.security.KeyPair;
 import java.util.Arrays;
 
 @Configuration
-@EnableConfigurationProperties(KeyProperties.class)
+@EnableConfigurationProperties(SecurityProperties.class)
 @AllArgsConstructor
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
@@ -38,15 +38,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private CustomUseTokenConverter useTokenConverter;
 
-    private KeyProperties keyProperties;
+    private SecurityProperties securityProperties;
 
     private UserDetailsService userDetailsService;
 
     @Bean
     public KeyPair keyPair() {
         return new KeyStoreKeyFactory
-                (keyProperties.getKeyStore().getLocation(), keyProperties.getKeyStore().getSecret().toCharArray())
-                .getKeyPair(keyProperties.getKeyStore().getAlias(), keyProperties.getKeyStore().getPassword().toCharArray());
+                (securityProperties.getKeyStore().getLocation(), securityProperties.getKeyStore().getSecret().toCharArray())
+                .getKeyPair(securityProperties.getKeyStore().getAlias(), securityProperties.getKeyStore().getPassword().toCharArray());
     }
 
     @Bean
@@ -81,9 +81,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         tokenServices.setTokenStore(tokenStore());
         tokenServices.setSupportRefreshToken(true);
         // token有效期自定义设置，10min,也可以数据库设置
-        tokenServices.setAccessTokenValiditySeconds(60 * 10);
+        tokenServices.setAccessTokenValiditySeconds(securityProperties.getAccessTokenValiditySeconds());
         // refresh_token 12h
-        tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 12);
+        tokenServices.setRefreshTokenValiditySeconds(securityProperties.getRefreshTokenValiditySeconds());
         tokenServices.setTokenEnhancer(jwtAccessTokenConverter());
         tokenServices.setClientDetailsService(jdbcClientDetailsService());
         return tokenServices;

@@ -1,5 +1,6 @@
 package com.wind.clerk.oauth.controller;
 
+import com.wind.clerk.common.response.ApiResponse;
 import com.wind.clerk.oauth.dao.entity.AuthorityDO;
 import com.wind.clerk.oauth.service.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class AuthorityController {
     }
 
     @GetMapping("tree")
-    public AuthorityDO treeAuthorities() {
-        return authorityService.tree();
+    public ApiResponse<AuthorityDO> treeAuthorities() {
+        return ApiResponse.success(authorityService.tree());
     }
 
     @PostMapping("add")
