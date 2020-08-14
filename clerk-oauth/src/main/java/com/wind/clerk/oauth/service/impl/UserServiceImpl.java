@@ -3,6 +3,8 @@ package com.wind.clerk.oauth.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wind.clerk.common.context.UserContextHolder;
+import com.wind.clerk.common.exception.BizEnum;
+import com.wind.clerk.common.exception.BizException;
 import com.wind.clerk.oauth.dao.entity.RoleDO;
 import com.wind.clerk.oauth.dao.entity.UserRoleDO;
 import com.wind.clerk.oauth.dao.mapper.UserMapper;
@@ -43,7 +45,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public PageInfo<UserDO> queryByPage(UserQuery query, int curPage, int pageSize) {
         PageHelper.startPage(curPage, pageSize);
-        if(query==null) query = new UserQuery();
+        if (query == null) query = new UserQuery();
 //        UserDO userDO = new UserDO();
 //        BeanUtils.copyProperties(query, userDO);
         return new PageInfo<>(userMapper.query(query));
@@ -99,19 +101,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean changePassword(ChangePasswordForm changePasswordForm) throws Exception {
+    public void changePassword(ChangePasswordForm changePasswordForm) {
         Integer userId = UserContextHolder.getCurrentUser().getUserId();
         UserDO userDO = userMapper.getById(userId);
         if (userDO == null) {
-            throw new Exception("user not found");
+            throw new BizException(BizEnum.USER_NOT_EXIST);
         }
-        if (!passwordEncoder.matches(changePasswordForm.getOldPassword(),userDO.getPassword())) {
-            throw new Exception("password not exact");
+        if (!passwordEncoder.matches(changePasswordForm.getOldPassword(), userDO.getPassword())) {
+            throw new BizException(BizEnum.USER_PASSWORD_INCONSISTENCY);
         }
         UserDO newPasswordUserDO = new UserDO();
         newPasswordUserDO.setId(userId);
         newPasswordUserDO.setPassword(changePasswordForm.getNewPassword());
-        return update(newPasswordUserDO);
+        update(newPasswordUserDO);
     }
 
     @Override

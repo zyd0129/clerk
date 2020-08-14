@@ -9,13 +9,18 @@ import java.util.List;
 
 public interface UserService {
     List<UserDO> query();
+
     PageInfo<UserDO> queryByPage(UserQuery query, int curPage, int pageSize);
+
     Boolean update(UserDO userDO);
+
     Boolean insert(UserDO userDO);
+
     UserDO getByIdWithRoles(Integer id);
+
     UserDO getByIdWithRolesAndAuthorities(Integer id);
 
-    boolean changePassword(ChangePasswordForm changePasswordForm) throws Exception;
+    void changePassword(ChangePasswordForm changePasswordForm);
 
     Boolean delete(Integer id);
 //    UserDO getByUsernameWithRolesAndAuthorities(String username);

@@ -1,5 +1,6 @@
 package com.wind.clerk.oauth.config;
 
+import com.wind.clerk.oauth.exception.handler.ClerkOAuthWebResponseExceptionTranslator;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -97,6 +98,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients(); //容许表单提交，默认是basic
+        // todo:目前正常业务不需要，后续看需求完善
+        // 这里用来修改自定义认证，为了支持自定义异常；同时设置exceptionFilter的异常处理
+//        security.addTokenEndpointAuthenticationFilter();
+//        security
+//                .authenticationEntryPoint()
+//                .accessDeniedHandler();
     }
 
     @Override
@@ -105,6 +112,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenStore(tokenStore())
                 .userDetailsService(userDetailsService)
                 .tokenServices(defaultTokenServices());
+        //设置 endpoints controller的 exceptionHandler,处理token,user相关异常
+        endpoints.exceptionTranslator(new ClerkOAuthWebResponseExceptionTranslator());
+
     }
 
 }
