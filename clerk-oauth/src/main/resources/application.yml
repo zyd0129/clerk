@@ -32,3 +32,6 @@ encrypt:
     password: admin123
     type: jks
     location: classpath:xc.keystore
+
+clerk-common:
+  enabled: true

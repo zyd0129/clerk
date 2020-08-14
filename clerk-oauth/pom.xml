@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.wind</groupId>
-            <artifactId>clerk-common</artifactId>
+            <artifactId>clerk-common-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -15,7 +15,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>clerk-oauth</module>
-        <module>clerk-common</module>
+        <module>clerk-common-starter</module>
         <module>clerk-gateway</module>
     </modules>
     <packaging>pom</packaging>
@@ -33,7 +33,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.wind</groupId>
-                <artifactId>clerk-common</artifactId>
+                <artifactId>clerk-common-starter</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>

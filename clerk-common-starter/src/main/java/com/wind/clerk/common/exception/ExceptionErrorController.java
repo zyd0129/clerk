@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-public class ExceptionErrorController implements ErrorController {
+public class ExceptionErrorController implements ErrorController, Ordered {
 
     @Autowired
     private ErrorAttributes errorAttributes;
@@ -44,4 +45,8 @@ public class ExceptionErrorController implements ErrorController {
         return ApiResponse.builder().code((Integer) body.get("status")).message((String) body.get("message")).data(body.get("errors")).build();
     }
 
+    @Override
+    public int getOrder() {
+        return 0;
+    }
 }
