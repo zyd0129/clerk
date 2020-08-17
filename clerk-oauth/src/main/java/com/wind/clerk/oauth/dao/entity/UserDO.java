@@ -39,6 +39,21 @@ public class UserDO implements UserDetails {
     private List<RoleDO> roles;
     private List<AuthorityDO> permissions;
 
+    @JsonIgnore
+    private Integer operatorId;
+
+    private UserDO operator;
+
+    @JsonIgnore
+    public Integer getOperatorId() {
+        return operatorId;
+    }
+
+    @JsonProperty
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
+    }
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

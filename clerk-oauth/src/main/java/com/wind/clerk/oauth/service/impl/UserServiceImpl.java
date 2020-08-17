@@ -12,9 +12,7 @@ import com.wind.clerk.oauth.dao.entity.UserDO;
 import com.wind.clerk.oauth.pojo.form.ChangePasswordForm;
 import com.wind.clerk.oauth.pojo.query.UserQuery;
 import com.wind.clerk.oauth.service.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,8 +44,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public PageInfo<UserDO> queryByPage(UserQuery query, int curPage, int pageSize) {
         PageHelper.startPage(curPage, pageSize);
         if (query == null) query = new UserQuery();
-//        UserDO userDO = new UserDO();
-//        BeanUtils.copyProperties(query, userDO);
         return new PageInfo<>(userMapper.query(query));
     }
 
@@ -55,6 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public Boolean update(UserDO userDO) {
         userDO.setGmtModified(LocalDateTime.now());
+        userDO.setOperatorId(UserContextHolder.getCurrentUser().getUserId());
         String password = userDO.getPassword();
         if (!StringUtils.isEmpty(password)) {
             userDO.setPassword(passwordEncoder.encode(password));
@@ -77,11 +74,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         LocalDateTime now = LocalDateTime.now();
         userDO.setGmtCreated(now);
         userDO.setGmtModified(now);
+        userDO.setOperatorId(UserContextHolder.getCurrentUser().getUserId());
         String password = userDO.getPassword();
         if (!StringUtils.isEmpty(password)) {
             userDO.setPassword(passwordEncoder.encode(password));
         }
-
+        userMapper.insert(userDO);
         List<RoleDO> roles = userDO.getRoles();
         if (roles != null && roles.size() > 0) {
             List<UserRoleDO> userRoleDOS = roles.stream().map(s -> new UserRoleDO(userDO.getId(), s.getId())).collect(Collectors.toList());

@@ -26,15 +26,13 @@ spring:
         namespace: ${nacos.namespace}
 clerk:
   security:
-    accessTokenValiditySeconds: 60
-    refreshTokenValiditySeconds: 60
+    accessTokenValiditySeconds: 600000
+    refreshTokenValiditySeconds: 600000
     key-store:
       alias: ps
       secret: admin123
       password: admin123
       type: jks
       location: classpath:xc.keystore
-
-
 clerk-common:
   enabled: true

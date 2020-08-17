@@ -43,13 +43,17 @@
         <result column="user_type" property="userType" jdbcType="INTEGER"/>
         <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
         <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <association property="operator" column="operator_id" javaType="UserDO">
+            <id property="id" column="operator_id"/>
+            <result property="username" column="operator_username"/>
+        </association>
 <!--        这里是解决通过roleId查询用户且分页功能-->
         <collection property="roles" javaType="ArrayList" ofType="RoleDO"  column="id" select="com.wind.clerk.oauth.dao.mapper.RoleMapper.queryByUserId"/>
     </resultMap>
 
     <select id="query" parameterType="com.wind.clerk.oauth.pojo.query.UserQuery" resultMap="queryMap">
-        select distinct u.*
-        from `clerk-oauth`.user u
+        select distinct u.*,us.username operator_username
+        from `clerk-oauth`.user u left join `clerk-oauth`.user us on u.operator_id=us.id
         left join `clerk-oauth`.user_role ur on u.id = ur.user_id
         <where>
             <if test="username!=null">

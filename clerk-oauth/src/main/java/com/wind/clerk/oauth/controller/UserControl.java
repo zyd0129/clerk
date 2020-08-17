@@ -17,34 +17,38 @@ public class UserControl {
     UserService userService;
 
     @PostMapping("query")
-    public PageInfo<UserDO> userBOList(@RequestBody PageQuery<UserQuery> pageQuery) {
-        return userService.queryByPage(pageQuery.getQuery(), pageQuery.getCurPage(), pageQuery.getPageSize());
+    public ApiResponse<PageInfo<UserDO>> userBOList(@RequestBody PageQuery<UserQuery> pageQuery) {
+        PageInfo<UserDO> userDOPageInfo = userService.queryByPage(pageQuery.getQuery(), pageQuery.getCurPage(), pageQuery.getPageSize());
+        return ApiResponse.success(userDOPageInfo);
+    }
+
+    @PostMapping("add")
+    public ApiResponse addUser(@RequestBody UserDO userDO) {
+        userService.insert(userDO);
+        return ApiResponse.success(userDO);
     }
 
     @GetMapping("get")
-    public UserDO getUser(Integer id) {
-        return userService.getByIdWithRolesAndAuthorities(id);
+    public ApiResponse<UserDO> getUser(Integer id) {
+        return ApiResponse.success(userService.getByIdWithRoles(id));
     }
 
     @PostMapping("modify")
-    public boolean modifyUser(@RequestBody UserDO userDO) {
+    public ApiResponse modifyUser(@RequestBody UserDO userDO) {
         userDO.setPassword(null);
-        return userService.update(userDO);
+        userService.update(userDO);
+        return ApiResponse.success();
     }
 
     @PostMapping("resetPassword")
     public ApiResponse resetPassword(@RequestBody UserDO userDO) throws Exception {
-         userService.update(userDO);
-         return ApiResponse.success();
-    }
-
-    @PostMapping("add")
-    public boolean addUser(@RequestBody UserDO userDO) {
-        return userService.insert(userDO);
+        userService.update(userDO);
+        return ApiResponse.success();
     }
 
     @PostMapping("delete")
-    public Boolean deleteUser(@RequestBody UserDO userDO) throws Exception {
-        return userService.delete(userDO.getId());
+    public ApiResponse deleteUser(@RequestBody UserDO userDO) throws Exception {
+        userService.delete(userDO.getId());
+        return ApiResponse.success();
     }
 }

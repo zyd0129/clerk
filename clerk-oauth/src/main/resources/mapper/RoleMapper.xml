@@ -9,6 +9,10 @@
         <result column="display_name" property="displayName" jdbcType="VARCHAR"/>
         <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
         <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <association property="operator" column="operator_id" javaType="UserDO">
+            <id property="id" column="operator_id"/>
+            <result property="username" column="operator_username"/>
+        </association>
         <collection property="permissions" ofType="AuthorityDO">
             <id property="id" column="a_id"/>
             <result property="name" column="a_name"/>
@@ -18,8 +22,24 @@
         </collection>
     </resultMap>
 
-    <select id="query" resultMap="roleResultMap">
-        select *
+    <resultMap id="roleSimpleMap" type="RoleDO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="display_name" property="displayName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="query" parameterType="com.wind.clerk.oauth.pojo.query.RoleQuery" resultMap="roleResultMap">
+        select r.*,u.username operator_username
+        from `clerk-oauth`.role r left join `clerk-oauth`.user u on r.operator_id=u.id
+        <where>
+            <if test="name!=null">
+                and r.name=#{name}
+            </if>
+        </where>
+    </select>
+
+    <select id="all" resultMap="roleSimpleMap">
+        select id, name
         from `clerk-oauth`.role
     </select>
 
@@ -39,8 +59,8 @@
     </select>
 
     <insert id="insert" parameterType="RoleDO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into `clerk-oauth`.role (name, display_name, gmt_created, gmt_modified)
-        values (#{name}, #{displayName}, #{gmtCreated}, #{gmtModified})
+        insert into `clerk-oauth`.role (name, display_name, operator_id, gmt_created, gmt_modified)
+        values (#{name}, #{displayName}, #{operatorId}, #{gmtCreated}, #{gmtModified})
     </insert>
 
     <update id="update" parameterType="RoleDO">
@@ -48,6 +68,9 @@
         <set>
             <if test="name!=null">
                 name=#{name},
+            </if>
+            <if test="operatorId!=null">
+                operator_id=#{operatorId},
             </if>
             <if test="displayName!=null">
                 display_name=#{displayName},

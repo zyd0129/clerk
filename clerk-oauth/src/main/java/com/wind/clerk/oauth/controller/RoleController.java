@@ -1,7 +1,10 @@
 package com.wind.clerk.oauth.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.wind.clerk.common.response.ApiResponse;
 import com.wind.clerk.oauth.dao.entity.RoleDO;
-import com.wind.clerk.oauth.service.AuthorityService;
+import com.wind.clerk.oauth.pojo.query.PageQuery;
+import com.wind.clerk.oauth.pojo.query.RoleQuery;
 import com.wind.clerk.oauth.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,29 +17,37 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
-    @GetMapping("query")
-    public List<RoleDO> listAuthorities() {
-        return roleService.query();
+    @PostMapping("query")
+    public ApiResponse<PageInfo<RoleDO>> queryRole(@RequestBody PageQuery<RoleQuery> pageQuery) {
+        PageInfo<RoleDO> roleDOPageInfo = roleService.queryByPage(pageQuery.getQuery(), pageQuery.getCurPage(), pageQuery.getPageSize());
+        return ApiResponse.success(roleDOPageInfo);
+    }
+
+    @GetMapping("all")
+    public ApiResponse<List<RoleDO>> allRole() {
+        return ApiResponse.success(roleService.all());
     }
 
     @GetMapping("get")
-    public RoleDO treeAuthorities(Integer id) {
-        return roleService.getById(id);
+    public ApiResponse<RoleDO> getRole(Integer id) {
+        return ApiResponse.success(roleService.getById(id));
     }
 
     @PostMapping("add")
-    public RoleDO addAuthority(@RequestBody RoleDO roleDO) {
+    public ApiResponse<RoleDO> addRole(@RequestBody RoleDO roleDO) {
         roleService.insert(roleDO);
-        return roleDO;
+        return ApiResponse.success(roleDO);
     }
 
     @PostMapping("modify")
-    public Boolean modifyAuthority(@RequestBody RoleDO roleDO) {
-        return roleService.update(roleDO);
+    public ApiResponse modifyRole(@RequestBody RoleDO roleDO) {
+        roleService.update(roleDO);
+        return ApiResponse.success();
     }
 
     @PostMapping("delete")
-    public Boolean deleteAuthority(@RequestBody RoleDO roleDO) throws Exception {
-        return roleService.delete(roleDO.getId());
+    public ApiResponse deleteRole(@RequestBody RoleDO roleDO) throws Exception {
+        roleService.delete(roleDO.getId());
+        return ApiResponse.success();
     }
 }

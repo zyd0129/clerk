@@ -2,6 +2,7 @@ package com.wind.clerk.common.context;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wind.clerk.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -28,6 +29,9 @@ public class UserContextHolder {
                     log.error("userToken parse error");
                 }
             }
+        }
+        if (userToken == null) {
+            throw new BizException.BizAuthenticationException("Authentication required");
         }
         return userToken;
     }

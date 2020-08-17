@@ -26,9 +26,18 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage(), e);
         return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
+
+    @ExceptionHandler(BizException.BizAuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiResponse handle(BizException.BizAuthenticationException e) {
+        log.error(e.getMessage(), e);
+        return ApiResponse.error(e.getCode(), e.getMessage());
+    }
+
     @ExceptionHandler(BizException.class)
     public ApiResponse handle(BizException e) {
         log.error(e.getMessage(), e);
         return ApiResponse.error(e.getCode(), e.getMessage());
     }
+
 }

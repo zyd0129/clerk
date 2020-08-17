@@ -23,5 +23,4 @@ public interface UserService {
     void changePassword(ChangePasswordForm changePasswordForm);
 
     Boolean delete(Integer id);
-//    UserDO getByUsernameWithRolesAndAuthorities(String username);
 }

@@ -1,9 +1,13 @@
 package com.wind.clerk.oauth.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.wind.clerk.common.context.UserContextHolder;
 import com.wind.clerk.oauth.dao.entity.AuthorityDO;
 import com.wind.clerk.oauth.dao.entity.RoleAuthorityDO;
 import com.wind.clerk.oauth.dao.entity.RoleDO;
 import com.wind.clerk.oauth.dao.mapper.RoleMapper;
+import com.wind.clerk.oauth.pojo.query.RoleQuery;
 import com.wind.clerk.oauth.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,7 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public Boolean update(RoleDO roleDO) {
         roleDO.setGmtModified(LocalDateTime.now());
+        roleDO.setOperatorId(UserContextHolder.getCurrentUser().getUserId());
         roleMapper.update(roleDO);
         List<AuthorityDO> authorities = roleDO.getPermissions();
         if (authorities == null){
@@ -40,6 +45,7 @@ public class RoleServiceImpl implements RoleService {
         LocalDateTime now = LocalDateTime.now();
         roleDO.setGmtCreated(now);
         roleDO.setGmtModified(now);
+        roleDO.setOperatorId(UserContextHolder.getCurrentUser().getUserId());
         roleMapper.insert(roleDO);
         List<AuthorityDO> authorities = roleDO.getPermissions();
         if (authorities != null && authorities.size() > 0) {
@@ -55,8 +61,15 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleDO> query() {
-        return roleMapper.query();
+    public List<RoleDO> all() {
+        return roleMapper.all();
+    }
+
+    @Override
+    public PageInfo<RoleDO> queryByPage(RoleQuery query, int curPage, int pageSize) {
+        PageHelper.startPage(curPage, pageSize);
+        if (query == null) query = new RoleQuery();
+        return new PageInfo<>(roleMapper.query(query));
     }
 
     @Override

@@ -15,9 +15,9 @@ public class UserRoleDO {
     private LocalDateTime gmtCreated;
     private LocalDateTime gmtModified;
 
-    public UserRoleDO(Integer roleId, Integer userId) {
-        this.roleId = roleId;
+    public UserRoleDO(Integer userId, Integer roleId) {
         this.userId = userId;
+        this.roleId = roleId;
         LocalDateTime now = LocalDateTime.now();
         gmtCreated = now;
         gmtModified = now;

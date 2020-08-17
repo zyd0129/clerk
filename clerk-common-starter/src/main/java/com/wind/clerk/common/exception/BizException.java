@@ -20,4 +20,11 @@ public class BizException extends RuntimeException {
     public Integer getCode() {
         return code;
     }
+
+    public static class BizAuthenticationException extends BizException{
+
+        public BizAuthenticationException(String message) {
+            super(401, message);
+        }
+    }
 }
