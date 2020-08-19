@@ -44,8 +44,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public KeyPair keyPair() {
-        return new KeyStoreKeyFactory
-                (securityProperties.getKeyStore().getLocation(), securityProperties.getKeyStore().getSecret().toCharArray())
+        return new KeyStoreKeyFactory(securityProperties.getKeyStore().getLocation(), securityProperties.getKeyStore().getSecret().toCharArray())
                 .getKeyPair(securityProperties.getKeyStore().getAlias(), securityProperties.getKeyStore().getPassword().toCharArray());
     }
 

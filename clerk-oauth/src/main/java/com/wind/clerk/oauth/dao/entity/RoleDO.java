@@ -29,19 +29,4 @@ public class RoleDO implements Serializable {
     public void setOperatorId(Integer operatorId) {
         this.operatorId = operatorId;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj==null){
-            return false;
-        }
-        if(this==obj){
-            return true;
-        }
-        if(obj instanceof RoleDO){
-            RoleDO roleDO=(RoleDO)obj;
-            return roleDO.id.equals(this.id);
-        }
-        return false;
-    }
 }

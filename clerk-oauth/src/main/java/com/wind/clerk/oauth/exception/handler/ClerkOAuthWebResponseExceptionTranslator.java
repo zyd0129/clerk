@@ -70,7 +70,7 @@ public class ClerkOAuthWebResponseExceptionTranslator implements WebResponseExce
     }
 
     private static class UnauthorizedException extends OAuth2Exception {
-        public UnauthorizedException(String msg, Throwable t) {
+        UnauthorizedException(String msg, Throwable t) {
             super(msg, t);
         }
 
@@ -86,7 +86,7 @@ public class ClerkOAuthWebResponseExceptionTranslator implements WebResponseExce
     }
 
     private static class ServerErrorException extends OAuth2Exception {
-        public ServerErrorException(String msg, Throwable t) {
+        ServerErrorException(String msg, Throwable t) {
             super(msg, t);
         }
 
@@ -102,7 +102,7 @@ public class ClerkOAuthWebResponseExceptionTranslator implements WebResponseExce
     }
 
     private static class ForbiddenException extends OAuth2Exception {
-        public ForbiddenException(String msg, Throwable t) {
+        ForbiddenException(String msg, Throwable t) {
             super(msg, t);
         }
 

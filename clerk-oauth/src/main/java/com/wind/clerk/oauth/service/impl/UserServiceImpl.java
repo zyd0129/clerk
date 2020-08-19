@@ -23,7 +23,6 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Queue;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +42,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public PageInfo<UserDO> queryByPage(UserQuery query, int curPage, int pageSize) {
         PageHelper.startPage(curPage, pageSize);
-        if (query == null) query = new UserQuery();
+        if (query == null) {
+            query = new UserQuery();
+        }
         return new PageInfo<>(userMapper.query(query));
     }
 

@@ -10,11 +10,18 @@ import java.util.List;
 
 public interface RoleMapper {
     Boolean update(RoleDO authority);
+
     Boolean insert(RoleDO authority);
+
     List<RoleDO> all();
+
     List<RoleDO> query(RoleQuery userQuery);
+
     Boolean delete(@Param("id") Integer id);
-    RoleDO getById(@Param("id")Integer id);
+
+    RoleDO getById(@Param("id") Integer id);
+
     void batchInsertRoleAuthority(List<RoleAuthorityDO> roleAuthorityDOList);
+
     void deleteRoleAuthorityByRoleId(Integer roleId);
 }

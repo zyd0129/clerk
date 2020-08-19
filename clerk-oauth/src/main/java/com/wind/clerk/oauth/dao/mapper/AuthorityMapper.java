@@ -8,8 +8,12 @@ import java.util.List;
 
 public interface AuthorityMapper {
     Boolean update(AuthorityDO authority);
+
     Boolean insert(AuthorityDO authority);
+
     List<AuthorityDO> query();
+
     Boolean delete(@Param("id") Integer id);
+
     Integer countOfRelatedRoles(@Param("authorityId") Integer authorityId);
 }

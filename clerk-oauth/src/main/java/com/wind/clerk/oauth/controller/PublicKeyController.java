@@ -14,6 +14,7 @@ import java.util.Map;
 public class PublicKeyController {
     @Autowired
     KeyPair keyPair;
+
     @GetMapping("/rsa/publicKey")
     public Map<String, Object> getKey() {
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();

@@ -29,12 +29,12 @@ public class RoleServiceImpl implements RoleService {
         roleDO.setOperatorId(UserContextHolder.getCurrentUser().getUserId());
         roleMapper.update(roleDO);
         List<AuthorityDO> authorities = roleDO.getPermissions();
-        if (authorities == null){
+        if (authorities == null) {
             return true;
         }
         roleMapper.deleteRoleAuthorityByRoleId(roleDO.getId());
         if (authorities.size() > 0) {
-            roleMapper.batchInsertRoleAuthority(authorities.stream().map(s->new RoleAuthorityDO(roleDO.getId(),s.getId())).collect(Collectors.toList()));
+            roleMapper.batchInsertRoleAuthority(authorities.stream().map(s -> new RoleAuthorityDO(roleDO.getId(), s.getId())).collect(Collectors.toList()));
         }
         return true;
     }
@@ -68,7 +68,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public PageInfo<RoleDO> queryByPage(RoleQuery query, int curPage, int pageSize) {
         PageHelper.startPage(curPage, pageSize);
-        if (query == null) query = new RoleQuery();
+        if (query == null) {
+            query = new RoleQuery();
+        }
         return new PageInfo<>(roleMapper.query(query));
     }
 
