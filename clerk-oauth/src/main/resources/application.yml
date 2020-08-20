@@ -22,7 +22,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${nacos.server-addr}
+        server-addr: ${nacos.addr}
         namespace: ${nacos.namespace}
 clerk:
   security:
