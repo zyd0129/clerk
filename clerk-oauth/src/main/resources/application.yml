@@ -22,8 +22,8 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${nacos.addr}
-        namespace: ${nacos.namespace}
+        server-addr: ${nacos_addr}
+        namespace: ${nacos_namespace}
 clerk:
   security:
     accessTokenValiditySeconds: 600000

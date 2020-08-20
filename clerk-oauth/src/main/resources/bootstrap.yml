@@ -4,6 +4,6 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr:  ${nacos.addr}
-        namespace: ${nacos.namespace}
+        server-addr:  ${nacos_addr}
+        namespace: ${nacos_namespace}
         file-extension: "yml"
