@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: ${profiles.active}
   application:
     name: "clerk-gateway"
   cloud:
