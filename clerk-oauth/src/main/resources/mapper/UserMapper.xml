@@ -119,8 +119,8 @@
     </select>
 
     <insert id="insert" parameterType="UserDO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into `clerk-oauth`.user (username, name, mobile, password, user_type, gmt_created, gmt_modified)
-        values (#{username}, #{name}, #{mobile}, #{password}, #{userType}, #{gmtCreated}, #{gmtModified})
+        insert into `clerk-oauth`.user (username, name, mobile, password, user_type,operator_id, gmt_created, gmt_modified)
+        values (#{username}, #{name}, #{mobile}, #{password}, #{userType},#{operatorId}, #{gmtCreated}, #{gmtModified})
     </insert>
 
     <update id="update" parameterType="UserDO">
@@ -137,6 +137,9 @@
             </if>
             <if test="password!=null">
                 password=#{password},
+            </if>
+            <if test="operatorId!=null">
+                operator_id=#{operatorId},
             </if>
             <if test="gmtModified!=null">
                 gmt_modified=#{gmtModified},
