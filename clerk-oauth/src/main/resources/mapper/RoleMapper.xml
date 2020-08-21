@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wind.clerk.oauth.dao.mapper.RoleMapper">
+<mapper namespace="com.ts.clerk.oauth.dao.mapper.RoleMapper">
     <resultMap id="roleResultMap" type="RoleDO">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -28,7 +28,7 @@
         <result column="display_name" property="displayName" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="query" parameterType="com.wind.clerk.oauth.pojo.query.RoleQuery" resultMap="roleResultMap">
+    <select id="query" parameterType="com.ts.clerk.oauth.pojo.query.RoleQuery" resultMap="roleResultMap">
         select r.*,u.username operator_username
         from `clerk-oauth`.role r left join `clerk-oauth`.user u on r.operator_id=u.id
         <where>
