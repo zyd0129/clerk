@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 @SpringBootApplication
 @EnableAuthorizationServer
-@MapperScan("com.wind.clerk.oauth.dao.mapper")
+@MapperScan("com.ts.clerk.oauth.dao.mapper")
 @EnableDiscoveryClient
 public class OauthServerApplication {
     public static void main(String[] args) {

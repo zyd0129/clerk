@@ -3,7 +3,7 @@ logging:
     root: info
     com.wind.clerk.oauth.dao.mapper: debug
 mybatis:
-  type-aliases-package: com.wind.clerk.oauth.dao.entity
+  type-aliases-package: com.ts.clerk.oauth.dao.entity
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: mapper/**/*.xml

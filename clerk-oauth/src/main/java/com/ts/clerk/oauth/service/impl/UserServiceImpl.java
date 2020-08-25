@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
+
+
     UserMapper userMapper;
 
     @Autowired

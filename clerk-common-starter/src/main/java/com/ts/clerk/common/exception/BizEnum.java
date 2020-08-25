@@ -2,7 +2,7 @@ package com.ts.clerk.common.exception;
 
 public enum BizEnum {
     USER_PASSWORD_INCONSISTENCY(6001, "password inconsistency"),
-    USER_NOT_EXIST(6001, "user not exist");
+    USER_NOT_EXIST(6002, "user not exist");
     private Integer code;
     private String message;
 
