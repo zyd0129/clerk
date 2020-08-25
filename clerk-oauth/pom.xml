@@ -13,7 +13,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.wind</groupId>
+            <groupId>com.ts</groupId>
             <artifactId>clerk-common-starter</artifactId>
         </dependency>
         <dependency>
