@@ -28,7 +28,7 @@ variables:
       "$CI_COMMIT_REF_SLUG"
     paths:
       - clerk-gateway/target/clerk-gateway-*.jar
-      - clerk-auth/target/clerk-auth-*.jar
+      - clerk-oauth/target/clerk-oauth-*.jar
       - .config.json
       - .md5.txt
     expire_in:
