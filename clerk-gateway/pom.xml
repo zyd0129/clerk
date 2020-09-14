@@ -5,12 +5,12 @@
     <parent>
         <artifactId>clerk</artifactId>
         <groupId>com.ts</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>clerk-gateway</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <dependencies>
         <dependency>
             <groupId>com.ts</groupId>
